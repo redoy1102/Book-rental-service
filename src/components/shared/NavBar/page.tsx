@@ -3,11 +3,10 @@ import Link from "next/link";
 export default function NavBar() {
   const navLinks = [
     { title: "About", path: "/about" },
-    { title: "Projects", path: "/projects" },
-    { title: "Contact", path: "/contact" },
+    { title: "Add Book", path: "/addBook" },
   ];
   return (
-    <div className="navbar">
+    <div className="navbar py-7">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -32,35 +31,30 @@ export default function NavBar() {
           >
             {navLinks.map((link, index) => (
               <li key={index}>
-                <Link href={link.path}>{link.title}</Link>
-              </li>
-            ))}
-            {navLinks.map((link, index) => (
-              <li key={index}>
-                <Link href={link.path}>{link.title}</Link>
+                <Link href={link.path} className="text-black">
+                  {link.title}
+                </Link>
               </li>
             ))}
           </ul>
         </div>
         <Link href="/" className="btn btn-ghost text-xl">
-          MIL
+          CWR Book Rental Service
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <Link href="/about">About</Link>
-          </li>
-          <li>
-            <Link href="/projects">Projects</Link>
-          </li>
-          <li>
-            <Link href="/contact">Contact</Link>
-          </li>
+        <ul className="flex items-center gap-5 px-1">
+          {navLinks.map((link, index) => (
+            <li key={index}>
+              <Link href={link.path} className="text-white btn btn-outline">
+                {link.title}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        <Link href="/login" className="btn btn-outline text-white">Login / Register</Link>
       </div>
     </div>
   );
