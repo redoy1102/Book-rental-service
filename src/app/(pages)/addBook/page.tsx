@@ -1,9 +1,10 @@
-import ContactForm from "@/components/contactForm";
+import AddBookForm from "@/components/addBookForm";
+
 
 export default function Contact() {
     return (
         <div className="min-h-screen ">
-            <ContactForm />
+            <AddBookForm />
         </div>
     );
 }
