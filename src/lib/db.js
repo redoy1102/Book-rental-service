@@ -6,11 +6,12 @@ const connectDB = async () => {
     }
 
     try{
-        await mongoose.connect(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log("MongoDB connected");
+        // await mongoose.connect(process.env.MONGODB_URI, {
+        //     useNewUrlParser: true,
+        //     useUnifiedTopology: true,
+        // });
+        await mongoose.connect(process.env.MONGODB_URI);
+        console.log("MongoDB Atlas connected");
     } catch(error){
         console.error("Error connecting to MongoDB:", error);
         throw new Error("Failed to connect to MongoDB");
