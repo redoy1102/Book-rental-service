@@ -1,6 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 
 const bookSchema = new Schema({
+  dob: {
+    type: Date,
+    required: [true, "Date is required!"]
+  },
   bookTitle: {
     type: String,
     required: [true, "Book title is required"],

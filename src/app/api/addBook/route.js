@@ -3,7 +3,7 @@ import Book from "@/models/book";
 
 export async function POST(req) {
   try {
-    const { bookTitle, writerNames, bookCode, bookHolder, price, department } =
+    const { dob, bookTitle, writerNames, bookCode, bookHolder, price, department } =
       await req.json();
 
     // Ensuring that DB Connection is established
@@ -11,6 +11,7 @@ export async function POST(req) {
 
     // Save the form data to the database
     const newBook = new Book({
+      dob,
       bookTitle,
       writerNames,
       bookCode,

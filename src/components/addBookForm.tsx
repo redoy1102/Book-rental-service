@@ -2,67 +2,46 @@
 
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import { useState } from "react";
 import { ClipLoader } from "react-spinners";
 import { toast, Toaster } from "sonner";
 import Select from "react-select";
-
-type formValues = {
-  bookTitle: string;
-  writers: {
-    name: string;
-  }[];
-  department: { value: string; label: string };
-  bookCode: string;
-  bookHolder: string;
-  price: number;
-};
+import { departments } from "@/data/departments";
+import { addBookFormTypes } from "@/types/addBookFormTypes";
+import { inputFields } from "@/inputFields/addBookFormInputFields";
 
 export default function AddBookForm() {
   const { control, register, handleSubmit, reset, formState } =
-    useForm<formValues>({
+    useForm<addBookFormTypes>({
       defaultValues: {
         writers: [{ name: "" }],
+        dob: new Date(),
       },
     });
-  const { errors } = formState;
+  const { errors, isDirty, isSubmitting } = formState;
 
   const { fields, append, remove } = useFieldArray({
     name: "writers",
     control,
   });
 
-  const [loading, setLoading] = useState(false);
-  const departments = [
-    { value: "cse", label: "CSE Department" },
-    { value: "civil", label: "Civil Department" },
-    { value: "eee", label: "EEE Department" },
-    { value: "bba", label: "BBA Department" },
-    { value: "agriculture", label: "Agriculture Department" },
-    { value: "english", label: "English Department" },
-  ];
-
-  const onSubmit = async (data: formValues) => {
-    setLoading(true);
+  const onSubmit = async (data: addBookFormTypes) => {
     console.log(data);
 
     const writerNames = data.writers.map((writer) => writer.name.trim()) || [];
-    
-    const writerNamesFre:{[key: string]: number} = {}
-    writerNames.forEach(name => {
-      writerNamesFre[name] = (writerNamesFre[name] || 0) + 1
-    })
-    for(const key in writerNamesFre){
-      if(writerNamesFre[key] > 1){
-        toast.error(`Write name ${key} is duplicated!`, {
+
+    const writerNamesFre: { [key: string]: number } = {};
+    writerNames.forEach((name) => {
+      writerNamesFre[name] = (writerNamesFre[name] || 0) + 1;
+    });
+    for (const key in writerNamesFre) {
+      if (writerNamesFre[key] > 1) {
+        toast.error(`Writer name ${key} is duplicated!`, {
           position: "top-right",
           duration: 3000,
-        })
-        setLoading(false);
+        });
         return;
       }
     }
-
 
     const res = await fetch("/api/addBook", {
       method: "POST",
@@ -76,6 +55,7 @@ export default function AddBookForm() {
         bookHolder: data.bookHolder,
         price: data.price,
         department: data.department.value,
+        dob: data.dob,
       }),
     });
 
@@ -97,8 +77,6 @@ export default function AddBookForm() {
         price: 0,
       });
     }
-
-    setLoading(false);
   };
 
   return (
@@ -112,20 +90,48 @@ export default function AddBookForm() {
         noValidate
       >
         <div className="flex flex-col gap-4 ">
-          {/* book title */}
-          <label className="flex flex-col">
-            <span>Book title</span>
-            <input
-              type="text"
-              id="bookTitle"
-              className="text-black p-2 bg-[#D9D9D9] rounded-lg my-1"
-              placeholder="Enter the name of the book"
-              {...register("bookTitle", {
-                required: "Book title is required",
-              })}
-            />
-            <p className="text-red-600">{errors.bookTitle?.message}</p>
-          </label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {inputFields.map((field, index) => {
+              return (
+                <div key={index}>
+                  <label className="flex flex-col">
+                    <span>{field.title}</span>
+                    <input
+                      type={field.type}
+                      id={field.id}
+                      className="text-black p-2 bg-[#D9D9D9] rounded-lg my-1"
+                      placeholder={field.placeholder}
+                      {...register(field.id as keyof addBookFormTypes, {
+                        required: field.requiredText,
+                      })}
+                    />
+                    <p className="text-red-600">
+                      {errors[field.id as keyof addBookFormTypes]?.message}
+                    </p>
+                  </label>
+                </div>
+              );
+            })}
+
+            {/* Department */}
+            <label className="flex flex-col">
+              <span>Select department</span>
+              <Controller
+                name="department"
+                control={control}
+                rules={{ required: "Department is required!" }}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    options={departments}
+                    className="text-black bg-[#D9D9D9] my-1"
+                    placeholder="Select department"
+                  />
+                )}
+              />
+              <p className="text-red-600">{errors.department?.message}</p>
+            </label>
+          </div>
 
           {/* Writer names */}
           <div>
@@ -176,75 +182,17 @@ export default function AddBookForm() {
               </div>
             </div>
           </div>
-
-          {/* Department */}
-          <label className="flex flex-col">
-            <span>Select department</span>
-            <Controller
-              name="department"
-              control={control}
-              rules={{ required: "Department is required!" }}
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  options={departments}
-                  className="text-black bg-[#D9D9D9] my-1"
-                  placeholder="Select department"
-                />
-              )}
-            />
-            <p className="text-red-600">{errors.department?.message}</p>
-          </label>
-
-          {/* Book code */}
-          <label className="flex flex-col">
-            <span>Book code</span>
-            <input
-              type="bookCode"
-              id="bookCode"
-              placeholder="Enter book code"
-              className="text-black p-2 bg-[#D9D9D9] rounded-lg my-1"
-              {...register("bookCode", { required: "Book code is required!" })}
-            />
-            <p className="text-red-600">{errors.bookCode?.message}</p>
-          </label>
-
-          {/* Book holder */}
-          <label className="flex flex-col">
-            <span>Book holder name</span>
-            <input
-              type="text"
-              id="bookHolder"
-              placeholder="Enter the name of the book holder"
-              className="text-black p-2 bg-[#D9D9D9] rounded-lg my-1"
-              {...register("bookHolder", {
-                required: "Book holder name is required",
-              })}
-            />
-            <p className="text-red-600">{errors.bookHolder?.message}</p>
-          </label>
-
-          {/* Price */}
-          <label className="flex flex-col">
-            <span>Price</span>
-            <input
-              type="number"
-              id="price"
-              className="text-black p-2 bg-[#D9D9D9] rounded-lg my-1"
-              placeholder="Enter the price of the book"
-              {...register("price", {
-                required: "Book price is required",
-              })}
-            />
-            <p className="text-red-600">{errors.price?.message}</p>
-          </label>
         </div>
 
+        {/* Submit button */}
         <div className="flex items-center justify-center">
-          {loading ? (
+          {isSubmitting ? (
             <ClipLoader color="#FFFFFF" className="mt-4" />
           ) : (
-            <button className="bg-[#A8FF35] rounded-full px-8 py-2 text-black font-bold text-2xl mt-4">
+            <button
+              disabled={!isDirty}
+              className="bg-[#A8FF35] rounded-full px-8 py-2 text-black font-bold text-2xl mt-4"
+            >
               Submit
             </button>
           )}
