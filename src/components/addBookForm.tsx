@@ -100,7 +100,7 @@ export default function AddBookForm() {
                     <input
                       type={field.type}
                       id={field.id}
-                      className="text-black p-2 bg-[#D9D9D9] rounded-lg my-1"
+                      className="text-black p-2 bg-[#D9D9D9] rounded-lg my-1 w-full"
                       placeholder={field.placeholder}
                       {...register(field.id as keyof addBookFormTypes, {
                         required: field.requiredText,

@@ -24,4 +24,5 @@ body {
   color: white; /* Text color for readability */
   background-color: rgba(0, 0, 0, 0.4); /* This creates an overlay effect */
   background-blend-mode: overlay;
+  min-height: 100vh;
 }
