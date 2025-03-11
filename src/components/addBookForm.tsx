@@ -8,6 +8,7 @@ import Select from "react-select";
 import { departments } from "@/data/departments";
 import { addBookFormTypes } from "@/types/addBookFormTypes";
 import { inputFields } from "@/inputFields/addBookFormInputFields";
+import { MdDeleteForever } from "react-icons/md";
 
 export default function AddBookForm() {
   const { control, register, handleSubmit, reset, formState } =
@@ -146,7 +147,7 @@ export default function AddBookForm() {
                   <div key={field.id}>
                     <span>Writer name</span>
                     <div className="grid grid-cols-12 my-1 gap-2">
-                      <div className="col-span-10">
+                      <div className="col-span-10 xl:col-span-11">
                         <div className="flex flex-col">
                           <label className="flex flex-col">
                             <input
@@ -160,18 +161,19 @@ export default function AddBookForm() {
                           </label>
                         </div>
                       </div>
+                      
                       <button
-                        className="col-span-2 bg-red-700 rounded-lg"
+                        className="col-span-2 xl:col-span-1 bg-red-700 rounded-lg"
                         type="button"
                         onClick={() => remove(index)}
                       >
-                        Remove
+                        <div className="flex justify-center items-center text-2xl"><MdDeleteForever /></div>
                       </button>
                     </div>
                   </div>
                 );
               })}
-              <div className="flex justify-center">
+              <div className="flex justify-center mt-2">
                 <button
                   className="bg-[#A8FF35] px-5 py-1 rounded text-black"
                   type="button"
@@ -191,7 +193,7 @@ export default function AddBookForm() {
           ) : (
             <button
               disabled={!isDirty}
-              className="bg-[#A8FF35] rounded-full px-8 py-2 text-black font-bold text-2xl mt-4"
+              className="bg-[#A8FF35] rounded-xl px-8 py-2 text-black font-bold text-2xl mt-4"
             >
               Submit
             </button>
