@@ -12,7 +12,7 @@ export default function NavBar() {
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className="h-5 w-5 md:h-8 md:w-8"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -38,8 +38,8 @@ export default function NavBar() {
             ))}
           </ul>
         </div>
-        <Link href="/" className="btn btn-ghost text-xl">
-          CWR Book Rental Service
+        <Link href="/" className="btn btn-ghost text-lg md:text-xl lg:text-2xl">
+          Book Rental Service
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
@@ -54,7 +54,7 @@ export default function NavBar() {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link href="/login" className="btn btn-outline text-white">Login / Register</Link>
+        <Link href="/login" className="btn btn-outline text-white">Login</Link>
       </div>
     </div>
   );

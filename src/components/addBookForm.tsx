@@ -81,7 +81,7 @@ export default function AddBookForm() {
 
   return (
     <div>
-      <h1 className="text-3xl md:text-5xl text-center font-bold my-6">
+      <h1 className="text-3xl md:text-5xl text-center font-bold my-3 md:my-7">
         Add Book
       </h1>
       <form
