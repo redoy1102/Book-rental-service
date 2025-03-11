@@ -10,6 +10,7 @@ export const inputFields = [
     title: "Buy Date",
     type: "date",
     id: "dob",
+    placeholder: "DD/MM/YYYY",
     requiredText: "Date is required!",
   },
   {
