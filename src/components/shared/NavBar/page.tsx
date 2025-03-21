@@ -4,6 +4,7 @@ export default function NavBar() {
   const navLinks = [
     { title: "About", path: "/about" },
     { title: "Add Book", path: "/addBook" },
+    { title: "Courses", path: "https://code-with-redoy.web.app/" },
   ];
   return (
     <div className="navbar py-7">
@@ -54,7 +55,9 @@ export default function NavBar() {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link href="/login" className="btn btn-outline text-white">Login</Link>
+        <Link href="/login" className="btn btn-outline text-white">
+          Login
+        </Link>
       </div>
     </div>
   );
