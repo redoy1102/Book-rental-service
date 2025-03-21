@@ -56,7 +56,7 @@ export default function NavBar() {
       </div>
       <div className="navbar-end">
         <Link href="/login" className="btn btn-outline text-white">
-          Login
+          Google Sign In
         </Link>
       </div>
     </div>
