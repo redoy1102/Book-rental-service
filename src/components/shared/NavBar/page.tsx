@@ -10,14 +10,17 @@ import { FcGoogle } from "react-icons/fc";
 export default function NavBar() {
   const navLinks = [
     { title: "About", path: "/about" },
-    { title: "Add Book", path: "/addBook" },
     { title: "Courses", path: "https://code-with-redoy.web.app/" },
   ];
+  const adminNavLinks = [{ title: "Add Book", path: "/addBook" }];
 
   const { user, signInWithGoogle, logout } = useAuth();
   console.log(user);
-  console.log(user?.displayName);
+  console.log(user?.displayName, user?.email);
   const router = useRouter();
+
+  const isAdmin: string = user?.email && adminList.includes(user?.email);
+  console.log(isAdmin);
 
   // Redirect if already logged in
   useEffect(() => {
@@ -76,6 +79,15 @@ export default function NavBar() {
                 </Link>
               </li>
             ))}
+
+            {isAdmin &&
+              adminNavLinks.map((link, index) => (
+                <li key={index}>
+                  <Link href={link.path} className="text-black">
+                    {link.title}
+                  </Link>
+                </li>
+              ))}
           </ul>
         </div>
         <Link href="/" className="btn btn-ghost text-lg md:text-xl lg:text-2xl">
@@ -84,6 +96,7 @@ export default function NavBar() {
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="flex items-center gap-5 px-1">
+          {/* For large display */}
           {navLinks.map((link, index) => (
             <li key={index}>
               <Link href={link.path} className="text-white btn btn-outline">
@@ -91,6 +104,14 @@ export default function NavBar() {
               </Link>
             </li>
           ))}
+          {isAdmin &&
+            adminNavLinks.map((link, index) => (
+              <li key={index}>
+                <Link href={link.path} className="text-white btn btn-outline">
+                  {link.title}
+                </Link>
+              </li>
+            ))}
         </ul>
       </div>
       <div className="navbar-end">
@@ -141,3 +162,5 @@ export default function NavBar() {
     </div>
   );
 }
+
+const adminList: string[] = ["codewithredoy@gmail.com"];
